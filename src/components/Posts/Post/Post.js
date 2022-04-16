@@ -6,9 +6,27 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import moment from 'moment';
 import { useDispatch } from 'react-redux';
 
-import { likePost, deletePost } from '../../../actions/posts';
+import { deletePost, likePost } from '../../../actions/posts';
 import useStyles from './styles';
 
+
+const showTags = (tags) => {
+  const allTags = new String(tags)
+  const allTags2 = allTags.split(",")
+  const allTagsHash = []
+  allTags2.forEach((tag) => {
+    var i = 0
+    while (i < tag.length) {
+      if (tag[0] === ' ' || tag[0] === '#') {
+        tag = tag.substring(1, tag.length)
+      }
+      i++
+    }
+    allTagsHash.push(`#${tag} `)
+  })
+  console.log(allTagsHash)
+  return allTagsHash
+}
 const Post = ({ post, setCurrentId }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -24,7 +42,9 @@ const Post = ({ post, setCurrentId }) => {
         <Button style={{ color: 'white' }} size="small" onClick={() => setCurrentId(post._id)}><MoreHorizIcon fontSize="medium" /></Button>
       </div>
       <div className={classes.details}>
-        <Typography variant="body2" color="textSecondary" component="h2">{post.tags.map((tag) => `#${tag} `)}</Typography>
+        <Typography variant="body2" color="textSecondary" component="h2">{
+          showTags(post.tags)
+        }</Typography>
       </div>
       <Typography className={classes.title} gutterBottom variant="h5" component="h2">{post.title}</Typography>
       <CardContent>
